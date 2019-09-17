@@ -88,9 +88,9 @@ public class LoginController {
 			return modelAndView;
 				
 			}else {
-				if(roles.contains("USER")) {
+				if(roles.contains("AUTHOR")) {
 					System.out.println("reached USER ROle");
-					modelAndView.setViewName("redirect:/admin/author");
+					modelAndView.setViewName("redirect:/author");
 					return modelAndView;
 				}else if(roles.contains("ADMIN")) {
 					System.out.println("reached Admin ROle");
@@ -190,9 +190,9 @@ public class LoginController {
 		 if(author.getOtp()==otp) {
 			author.setVerified(true);
 			Role author_role = new Role(2,"AUTHOR");
-		    Role admin_role = new Role(1,"ADMIN");
+		  
 			
-			author.setRoles(new HashSet<Role>(Arrays.asList(author_role,admin_role)));
+			author.setRoles(new HashSet<Role>(Arrays.asList(author_role)));
 			
 	
 			List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>(auth.getAuthorities());
@@ -204,7 +204,7 @@ public class LoginController {
 						
 			//check if some data is available pertaining to the student and return view accordingly.
 			
-			modelAndView.setViewName("redirect:/student");
+			modelAndView.setViewName("redirect:/author");
 			
 			
 		 }else {

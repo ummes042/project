@@ -1,6 +1,9 @@
 package com.aud.demo.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -21,12 +24,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aud.demo.model.User;
 import com.aud.demo.model.Paper;
+import com.aud.demo.model.PaperStatus;
+import com.aud.demo.model.User;
 import com.aud.demo.service.AuthorServiceImpl;
 import com.aud.demo.service.PaperServiceImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import net.minidev.json.JSONObject;
+
 
 @RestController
 @RequestMapping("/paper")
@@ -65,17 +71,15 @@ public String saveOrUpdate(Paper paper, BindingResult bindingResult) {
 		String fieldName="";
 		String errorMsg="";
 		
-		JSONObject responce = new JSONObject();
-		JSONObject errors = new JSONObject();
-		
+		Map responce = new HashMap<Object,Object>();
+		Map errors = new HashMap<Object,Object>();
+		 ObjectMapper mapper = new ObjectMapper();
 		
 		
 		if (bindingResult.hasErrors()) {
 			
 			 logger.info("Paper->{} Binding results {}",paper,bindingResult.getAllErrors());
-			
-			 responce.put("type", "error");
-			
+			responce.put("type", "error");
 			
 			 for (Object object : bindingResult.getAllErrors()) {
 				 
@@ -96,9 +100,22 @@ public String saveOrUpdate(Paper paper, BindingResult bindingResult) {
 				    
 				}
 			 responce.put("errors", errors);
-			 return responce.toJSONString();
+			 try {
+				return mapper.writeValueAsString(responce);
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}else {
 	    //paper.setPassword( new BCryptPasswordEncoder().encode(paper.getPassword()));
+			
+		paper.setStatus(PaperStatus.Processing);	
+		
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User author = authorService.findAuthorByEmail(auth.getName());
+		
+		paper.setAuthor(author);
+		
 		Long id = paperService.savePaper(paper);
 		
 		//paper.setId(id);
@@ -106,9 +123,16 @@ public String saveOrUpdate(Paper paper, BindingResult bindingResult) {
 		logger.info("Paper -> {}",paper.toString());
 			responce.put("type", "success");
 			responce.put("obj", paper);
-			return responce.toJSONString();
 			
-		}	
+			 try {
+					return mapper.writeValueAsString(responce);
+				} catch (JsonProcessingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
+		}
+		return errorMsg;	
 }
 	
 	
@@ -118,10 +142,9 @@ public String saveOrUpdate(Paper paper, BindingResult bindingResult) {
 		paperService.deleteById(paperId);
 		logger.info("Paper has been deleted with id : {}",paperId);
 //		String responce = "{type:'success',text:'Author has been deleted'}";
-		JSONObject response = new JSONObject();
+		Map response = new HashMap<Object,Object>();
 		response.put("type","success");
 		response.put("text","Paper has been deleted");
-		
 		
 		
 		
@@ -140,6 +163,22 @@ public String saveOrUpdate(Paper paper, BindingResult bindingResult) {
 		
 		
 	}
+	
+	@GetMapping("/fetch")
+	public Set<Paper> getPapersOfAuthor() {
+		
+		
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User author = authorService.findAuthorByEmail(auth.getName());
+	    return author.getPaper();
+//		return paperService.findPapersById(author);
+		
+		
+		
+	}
+	
+	
 	
 }
 

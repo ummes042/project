@@ -5,14 +5,13 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -31,13 +30,13 @@ import com.aud.demo.model.Role;
 import com.aud.demo.model.User;
 import com.aud.demo.service.AuthorServiceImpl;
 
-import net.minidev.json.JSONObject;
+
 
 
 
 
 @RestController
-@RequestMapping("/author")
+@RequestMapping("/author/rest")
 public class AuthorRestController {
 
 	@Autowired
@@ -65,25 +64,7 @@ public class AuthorRestController {
 		
 	}
 	
-	@GetMapping("/test")
-	public Object registerAuthor(HttpSession session) {
-Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
-		System.out.println("Authname"+auth.getName());
-		
-		User author = authorService.findAuthorByEmail(auth.getName());
-		session.setAttribute("author",author);
-		return author;
-		
-	}
 	
-	@GetMapping("/test2")
-	public User registerAuthor2(HttpSession session) {
-		User author = (User) session.getAttribute("author");
-		
-		return author;
-		
-	}
 	
 public String saveOrUpdate(User author, BindingResult bindingResult) {
 		
@@ -99,7 +80,12 @@ public String saveOrUpdate(User author, BindingResult bindingResult) {
 			
 			 logger.info("Author->{} Binding results {}",author,bindingResult.getAllErrors());
 			
-			 responce.put("type", "error");
+			try {
+				responce.put("type", "error");
+			} catch (JSONException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			
 			
 			 for (Object object : bindingResult.getAllErrors()) {
@@ -116,12 +102,23 @@ public String saveOrUpdate(User author, BindingResult bindingResult) {
 				        errorMsg = objectError.getDefaultMessage();
 				        logger.info(" Binding Errors-> {} Message {}",objectError.getCode(),errorMsg);
 				    }
-				    errors.put(fieldName, errorMsg);
+				    
+				    try {
+						errors.put(fieldName, errorMsg);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				    
 				    
 				}
-			 responce.put("errors", errors);
-			 return responce.toJSONString();
+			 try {
+				responce.put("errors", errors);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			 return responce.toString();
 		}else {
 	    author.setPassword( new BCryptPasswordEncoder().encode(author.getPassword()));
 	    
@@ -149,9 +146,14 @@ public String saveOrUpdate(User author, BindingResult bindingResult) {
 		new Mail().sendMail(author);
 		
 		logger.info("Author -> {}",author.toString());
-			responce.put("type", "success");
+		try {	
+		responce.put("type", "success");
 			responce.put("obj", author);
-			return responce.toJSONString();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			return responce.toString();
 			
 		}	
 }
@@ -164,9 +166,13 @@ public String saveOrUpdate(User author, BindingResult bindingResult) {
 		logger.info("Authro has been deleted with id : {}",authorId);
 //		String responce = "{type:'success',text:'Author has been deleted'}";
 		JSONObject response = new JSONObject();
+		try {
 		response.put("type","success");
 		response.put("text","Author has been deleted");
-		
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 		

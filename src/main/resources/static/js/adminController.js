@@ -4,7 +4,7 @@
 
 
 var app = angular.module('myApp', []);
-app.controller('authorCtrl', function($scope,$http) {
+app.controller('adminCtrl', function($scope,$http) {
 	
     $scope.author = {};
     $scope.initAuthor = {};
@@ -41,7 +41,7 @@ app.controller('authorCtrl', function($scope,$http) {
     	}
     	
     	$http({
-            url: '/author/register',
+            url: '/admin/author/register',
             method: method,
             data: angular.toJson($scope.author),
             headers: {
@@ -89,7 +89,7 @@ $scope.getAuthors = function(){
     	
     	
     	$http({
-            url: '/author/fetchAll',
+            url: '/admin/author/fetchAll',
             method: "GET",
             
             	 
@@ -122,7 +122,7 @@ $scope.deleteAuthor = function(index){
 	console.log("Deleting Author with ID:"+parseInt(id));
 	
 	 $http({
-         url: '/author/delete/'+parseInt(id),
+         url: '/admin/author/delete/'+parseInt(id),
          method: "DELETE",
          headers: {
              'X-CSRF-TOKEN': $scope.CSRF_TOKEN,

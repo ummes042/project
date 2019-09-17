@@ -97,6 +97,15 @@ public class PaperServiceImpl implements PaperService {
 		
 		return true;
 	}
+
+	public List<Paper> findPapersById(User author) {
+		// TODO Auto-generated method stub
+		
+      
+		
+		return PaperRepo.findPaperByAuthor(author);
+		
+	}
 	
 	
 

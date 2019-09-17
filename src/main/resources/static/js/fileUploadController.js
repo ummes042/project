@@ -100,13 +100,7 @@ app.controller('fileCtrl', ['$scope', '$http', function ($scope, $http) {
 
                                 }
                             });
-                           
-                       
-           
-            
-          
-            
-         
+ 
             }
         
     };

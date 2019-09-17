@@ -1,0 +1,69 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	 xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Edge Rating Prediction</title>
+         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  
+      
+       <link rel="stylesheet" type="text/css" href="css/util.css">
+
+       <script src="js/bootstrap-notify.js"></script>
+       <style>
+           .responsive{
+                width: 300px;
+                height:  200px;
+           }
+       </style>
+       	<meta name="_csrf" th:content="${_csrf.token}"/>
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+    
+    <body  ng-App="App">
+        <div ng-controller="authorhomeCtrl">
+            
+            
+           
+          
+   
+          <div style="padding:20px;text-align: center;">
+                
+                <table ng-if="papers.length>0" class="table table-striped table-responsive">
+                    <thead >
+                    <th style="text-align: center">Id</th>
+                  
+                    <th style="text-align: center">Title</th>
+                    <th style="text-align: center">Category</th>
+                     <th style="text-align: center">Keywords</th>
+                    <th style="text-align: center">Experts</th>
+                       <th style="text-align: center">Status</th>
+                          <th style="text-align: center">Action</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="x in papers">
+                            <td>{{$index+1}}</td>
+                             <td>{{x.title}}</td>
+                             <td>{{x.category}}</td>
+                             <td>{{x.keywords}}</td>
+                             <td>{{x.experts}}</td>
+                             <td>{{x.status}}</td>
+                             <td ng-if="x.status=='Accepted'">Download</td>
+                             <td ng-elif>No action</td>
+                             
+                        </tr>    
+                    </tbody>
+                      
+                </table>
+            </div>
+            
+            
+                <script src="../js/authorhomecontroller.js"></script>     
+            
+        </div>
+    </body>
+</html>

@@ -1,17 +1,25 @@
 package com.aud.demo.model;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
+
+
+
+
+
+
+
 
 @Entity
 public class Paper {
@@ -32,8 +40,16 @@ public class Paper {
 			String comments;
 			String experts;
 			
-			@Enumerated
-		    ROLES category;
+			@JsonIgnore
+			@ManyToOne
+			User author;
+			
+			@Enumerated(EnumType.STRING)
+		    PaperStatus status;
+			
+			
+			@Enumerated(EnumType.STRING)
+		    Categories category;
 			
 //			@ManyToOne
 //			private Author author;
@@ -42,8 +58,20 @@ public class Paper {
 //			List<Reviewer> reviewers;
 //			
 			
+			
+			
+			
 			public long getId() {
 				return id;
+			}
+
+			@JsonIgnore
+			public User getAuthor() {
+				return author;
+			}
+
+			public void setAuthor(User author) {
+				this.author = author;
 			}
 
 			public void setId(long id) {
@@ -98,17 +126,27 @@ public class Paper {
 				this.experts = experts;
 			}
 
-			public ROLES getCategory() {
+			public Categories getCategory() {
 				return category;
 			}
 
-			public void setCategory(ROLES category) {
+			public void setCategory(Categories category) {
 				this.category = category;
+			}
+
+			
+			
+			public PaperStatus getStatus() {
+				return status;
+			}
+
+			public void setStatus(PaperStatus status) {
+				this.status = status;
 			}
 
 			public Paper(long id, @NotEmpty(message = "*please provide title") String title,
 					@Size(min = 5, message = "*Please provide atleast 5 keywords") String keywords, String description,
-					String filename, String comments, String experts, ROLES category) {
+					String filename, String comments, String experts, Categories category) {
 				super();
 				this.id = id;
 				this.title = title;
@@ -122,7 +160,7 @@ public class Paper {
 
 			public Paper(@NotEmpty(message = "*please provide title") String title,
 					@Size(min = 5, message = "*Please provide atleast 5 keywords") String keywords, String description,
-					String filename, String comments, String experts, ROLES category) {
+					String filename, String comments, String experts, Categories category) {
 				super();
 				this.title = title;
 				this.keywords = keywords;
@@ -143,6 +181,8 @@ public class Paper {
 						+ description + ", filename=" + filename + ", Comments=" + comments + ", experts=" + experts
 						+ ", category=" + category + "]";
 			}
+			
+		
 
 //			public Author getAuthor() {
 //				return author;
