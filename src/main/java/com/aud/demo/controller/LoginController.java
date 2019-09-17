@@ -54,6 +54,7 @@ public class LoginController {
 	
 	
 	@RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
+	
 	public ModelAndView login(HttpSession session){
 		
 		ModelAndView modelAndView = new ModelAndView();
