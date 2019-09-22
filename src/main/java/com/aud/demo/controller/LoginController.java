@@ -42,7 +42,9 @@ import com.aud.demo.service.ReviewerService;
 
 
 @Controller
-public class LoginController {
+public  class LoginController {
+	
+	
 	
 	@Autowired
 	private AuthorService authorService;

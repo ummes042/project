@@ -1,15 +1,15 @@
 
 package com.aud.demo.controller;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
 import javax.validation.Valid;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +30,8 @@ import com.aud.demo.mail.Mail;
 import com.aud.demo.model.Role;
 import com.aud.demo.model.User;
 import com.aud.demo.service.AuthorServiceImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/author/rest")
@@ -67,21 +69,16 @@ public String saveOrUpdate(User author, BindingResult bindingResult) {
 		String fieldName="";
 		String errorMsg="";
 		
-		JSONObject responce = new JSONObject();
-		JSONObject errors = new JSONObject();
-		
+		Map<Object,Object> responce = new HashMap<Object,Object>();
+		Map<Object,Object>  errors = new HashMap<Object,Object>();
+		ObjectMapper mapper = new ObjectMapper();
 
 		
 		if (bindingResult.hasErrors()) {
 			
 			 logger.info("Author->{} Binding results {}",author,bindingResult.getAllErrors());
 			
-			try {
-				responce.put("type", "error");
-			} catch (JSONException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			responce.put("type", "error");
 			
 			
 			 for (Object object : bindingResult.getAllErrors()) {
@@ -99,22 +96,18 @@ public String saveOrUpdate(User author, BindingResult bindingResult) {
 				        logger.info(" Binding Errors-> {} Message {}",objectError.getCode(),errorMsg);
 				    }
 				    
-				    try {
-						errors.put(fieldName, errorMsg);
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				    errors.put(fieldName, errorMsg);
 				    
 				    
 				}
+			 responce.put("errors", errors);
 			 try {
-				responce.put("errors", errors);
-			} catch (JSONException e) {
+				return mapper.writeValueAsString(responce);
+			} catch (JsonProcessingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			 return responce.toString();
+			 
 		}else {
 	    author.setPassword( new BCryptPasswordEncoder().encode(author.getPassword()));
 	    
@@ -127,10 +120,10 @@ public String saveOrUpdate(User author, BindingResult bindingResult) {
 		
 		
 	    Role author_role = new Role(2,"AUTHOR");
-	    Role admin_role = new Role(1,"ADMIN");
+//	    Role admin_role = new Role(1,"ADMIN");
 	    Set<Role> roles = new HashSet<>();
 	    roles.add(author_role);
-	    roles.add(admin_role);
+//	    roles.add(admin_role);
 	    
 	    
 		Long id = authorService.saveAuthor(author);
@@ -142,16 +135,17 @@ public String saveOrUpdate(User author, BindingResult bindingResult) {
 		new Mail().sendMail(author);
 		
 		logger.info("Author -> {}",author.toString());
-		try {	
 		responce.put("type", "success");
 			responce.put("obj", author);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-			return responce.toString();
+			try {
+				return mapper.writeValueAsString(responce);
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
-		}	
+		}
+		return errorMsg;	
 }
 	
 	
@@ -161,18 +155,23 @@ public String saveOrUpdate(User author, BindingResult bindingResult) {
 		authorService.deleteById(authorId);
 		logger.info("Authro has been deleted with id : {}",authorId);
 //		String responce = "{type:'success',text:'Author has been deleted'}";
-		JSONObject response = new JSONObject();
-		try {
+		Map<Object,Object> response = new HashMap<Object,Object>();
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
 		response.put("type","success");
 		response.put("text","Author has been deleted");
-		} catch (JSONException e) {
+		
+		
+		
+		
+		try {
+			return mapper.writeValueAsString(response);
+		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
-		return response.toString();
+		return null;
 		
 	}
 	
