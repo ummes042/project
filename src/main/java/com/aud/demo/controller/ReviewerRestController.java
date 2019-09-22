@@ -1,4 +1,3 @@
-
 package com.aud.demo.controller;
 
 import java.util.HashSet;
@@ -8,8 +7,6 @@ import java.util.Set;
 
 import javax.validation.Valid;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,46 +20,47 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aud.demo.mail.Mail;
 import com.aud.demo.model.Role;
 import com.aud.demo.model.User;
-import com.aud.demo.service.AuthorServiceImpl;
+import com.aud.demo.service.ReviewerServiceImpl;
+
+import net.minidev.json.JSONObject;
+
 
 @RestController
-@RequestMapping("/author/rest")
-public class AuthorRestController {
-
+public class ReviewerRestController {
+	
 	@Autowired
-	AuthorServiceImpl authorService;
+	ReviewerServiceImpl reviewerService;
 	
 	
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@PostMapping("/register")
-	public String registerAuthor(@RequestBody @Valid User author, BindingResult bindingResult) {
+	public String registerReviewer(@RequestBody @Valid User reviewer, BindingResult bindingResult) {
 		
-		return saveOrUpdate(author, bindingResult);
+		return saveOrUpdate(reviewer, bindingResult);
 		
 		
 	}
 	
 	
 	@PutMapping("/register")
-	public String updateAuthor(@RequestBody @Valid User author, BindingResult bindingResult) {
+	public String updateReviewer(@RequestBody @Valid User reviewer, BindingResult bindingResult) {
 		
 		
-		return saveOrUpdate(author, bindingResult);
+		return saveOrUpdate(reviewer, bindingResult);
 		
 		
 	}
 	
 	
 	
-public String saveOrUpdate(User author, BindingResult bindingResult) {
+public String saveOrUpdate(User reviewer, BindingResult bindingResult) {
 		
 		String fieldName="";
 		String errorMsg="";
@@ -74,14 +72,9 @@ public String saveOrUpdate(User author, BindingResult bindingResult) {
 		
 		if (bindingResult.hasErrors()) {
 			
-			 logger.info("Author->{} Binding results {}",author,bindingResult.getAllErrors());
+			 logger.info("Reviewer->{} Binding results {}",reviewer,bindingResult.getAllErrors());
 			
-			try {
-				responce.put("type", "error");
-			} catch (JSONException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			 responce.put("type", "error");
 			
 			
 			 for (Object object : bindingResult.getAllErrors()) {
@@ -98,31 +91,20 @@ public String saveOrUpdate(User author, BindingResult bindingResult) {
 				        errorMsg = objectError.getDefaultMessage();
 				        logger.info(" Binding Errors-> {} Message {}",objectError.getCode(),errorMsg);
 				    }
-				    
-				    try {
-						errors.put(fieldName, errorMsg);
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				    errors.put(fieldName, errorMsg);
 				    
 				    
 				}
-			 try {
-				responce.put("errors", errors);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			 return responce.toString();
+			 responce.put("errors", errors);
+			 return responce.toJSONString();
 		}else {
-	    author.setPassword( new BCryptPasswordEncoder().encode(author.getPassword()));
+			reviewer.setPassword( new BCryptPasswordEncoder().encode(reviewer.getPassword()));
 	    
 	    //set an otp
 	   
 		Random rnd = new Random();
 		int otp = 100000 + rnd.nextInt(900000);
-		author.setOtp(otp);
+		reviewer.setOtp(otp);
 	    
 		
 		
@@ -133,42 +115,33 @@ public String saveOrUpdate(User author, BindingResult bindingResult) {
 	    roles.add(admin_role);
 	    
 	    
-		Long id = authorService.saveAuthor(author);
-		author.setRoles(roles);
-		authorService.saveAuthor(author);
-		author.setId(id);
+		Long id = reviewerService.saveReviewer(reviewer);
+		reviewer.setRoles(roles);
+		reviewerService.saveReviewer(reviewer);
+		reviewer.setId(id);
 		
 		
-		new Mail().sendMail(author);
+		new Mail().sendMail(reviewer);
 		
-		logger.info("Author -> {}",author.toString());
-		try {	
-		responce.put("type", "success");
-			responce.put("obj", author);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-			return responce.toString();
+		logger.info("reviewer -> {}",reviewer.toString());
+			responce.put("type", "success");
+			responce.put("obj", reviewer);
+			return responce.toJSONString();
 			
 		}	
 }
 	
 	
-	@DeleteMapping("/delete/{authorId}")
-	public String deleteAuthor(@PathVariable long authorId) {
+	@DeleteMapping("/delete/{reviewerId}")
+	public String deleteReviewer(@PathVariable long reviewerId) {
 		
-		authorService.deleteById(authorId);
-		logger.info("Authro has been deleted with id : {}",authorId);
+		reviewerService.deleteById(reviewerId);
+		logger.info("Authro has been deleted with id : {}",reviewerId);
 //		String responce = "{type:'success',text:'Author has been deleted'}";
 		JSONObject response = new JSONObject();
-		try {
 		response.put("type","success");
-		response.put("text","Author has been deleted");
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		response.put("text","reviewer has been deleted");
+		
 		
 		
 		
@@ -177,16 +150,18 @@ public String saveOrUpdate(User author, BindingResult bindingResult) {
 	}
 	
 	@GetMapping("/fetchAll")
-	public List<User> getAllAuthors() {
+	public List<User> getAllReviewers() {
 		
 		
 		
 		
-		return authorService.findAll();
+		return reviewerService.findAll();
 		
 		
 		
 	}
 	
 }
+
+
 

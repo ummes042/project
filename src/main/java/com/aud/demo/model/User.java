@@ -10,10 +10,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 @Entity
@@ -31,6 +33,8 @@ public class User {
 	@Pattern(regexp="^([1-9])\\d{9}", message = "*Please provide a valid contact number")
 //	@NotEmpty(message = "*Please provide your contact number")
 	String mobile;
+	
+	@JsonIgnore
 	String password;
 	
 	//address fields
@@ -45,9 +49,26 @@ public class User {
 	boolean verified;
 	
 	String pancard;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy="author")
+	Set<Paper> paper;
+	
+	
+	
+	
+	
+	
+	public Set<Paper> getPaper() {
+		return paper;
+	}
 
-	
-	
+
+
+	public void setPaper(Set<Paper> paper) {
+		this.paper = paper;
+	}
+
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
@@ -189,9 +210,13 @@ public class User {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
+	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}
+	
+	@JsonProperty
 	public void setPassword(String password) {
 		this.password = password;
 	}

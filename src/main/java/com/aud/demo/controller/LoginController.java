@@ -35,6 +35,7 @@ import com.aud.demo.model.Role;
 import com.aud.demo.model.User;
 import com.aud.demo.repository.RoleRepository;
 import com.aud.demo.service.AuthorService;
+import com.aud.demo.service.ReviewerService;
 
 
 
@@ -46,6 +47,8 @@ public class LoginController {
 	@Autowired
 	private AuthorService authorService;
 	
+	@Autowired
+	private ReviewerService reviewerservice;
 	
 	@Autowired
     private RoleRepository roleRepository;
@@ -89,9 +92,9 @@ public class LoginController {
 			return modelAndView;
 				
 			}else {
-				if(roles.contains("USER")) {
+				if(roles.contains("AUTHOR")) {
 					System.out.println("reached USER ROle");
-					modelAndView.setViewName("redirect:/admin/author");
+					modelAndView.setViewName("redirect:/author");
 					return modelAndView;
 				}else if(roles.contains("ADMIN")) {
 					System.out.println("reached Admin ROle");
@@ -180,6 +183,51 @@ public class LoginController {
 		return modelAndView;
 	}
 	
+	@Transactional
+	@RequestMapping(value = "/reviewer/registration", method = RequestMethod.POST)
+	public ModelAndView createNewReviewer(@Valid User reviewer, BindingResult bindingResult,HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView();
+		User authorExits = reviewerservice.findReviewerByEmail(reviewer.getEmail());
+		if (authorExits != null) {
+			bindingResult
+					.rejectValue("email", "error.user",
+							"There is already a user registered with the email provided");
+		}
+		if (bindingResult.hasErrors()) {
+			modelAndView.setViewName("registration");
+		} else {
+			
+			reviewer.setVerified(true);
+			reviewer.setActive(0);
+			Random rnd = new Random();
+			int otp = 100000 + rnd.nextInt(900000);
+			reviewer.setOtp(otp);
+			
+			Role author_role = new Role(3,"REVIEWER");
+		   
+			
+			
+			reviewer.setPassword( new BCryptPasswordEncoder().encode(reviewer.getPassword()));
+			long id = reviewerservice.saveReviewer(reviewer);
+			reviewer.setId(id);
+			reviewer.setRoles(new HashSet<Role>(Arrays.asList(author_role)));
+			reviewerservice.saveReviewer(reviewer);
+			
+			
+//			Mail mail = new Mail();
+//			mail.sendMail(author);
+			
+			modelAndView.addObject("successMessage", "OTP sent to your registered email, Login to verify email");
+			
+//			modelAndView.addObject("user", new User());
+//			autoLogin(user,request );
+			
+			modelAndView.setViewName("login");
+			
+		}
+		return modelAndView;
+	}
+	
 	
 	@RequestMapping(value = "/validateUser", method = RequestMethod.POST)
 	public ModelAndView validateNewAuthor(@RequestParam("otp") int otp) {
@@ -191,9 +239,9 @@ public class LoginController {
 		 if(author.getOtp()==otp) {
 			author.setVerified(true);
 			Role author_role = new Role(2,"AUTHOR");
-		    Role admin_role = new Role(1,"ADMIN");
+		  
 			
-			author.setRoles(new HashSet<Role>(Arrays.asList(author_role,admin_role)));
+			author.setRoles(new HashSet<Role>(Arrays.asList(author_role)));
 			
 	
 			List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>(auth.getAuthorities());
@@ -205,7 +253,7 @@ public class LoginController {
 						
 			//check if some data is available pertaining to the student and return view accordingly.
 			
-			modelAndView.setViewName("redirect:/student");
+			modelAndView.setViewName("redirect:/author");
 			
 			
 		 }else {
