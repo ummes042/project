@@ -41,7 +41,9 @@ import com.aud.demo.service.AuthorService;
 
 
 @Controller
-public class LoginController {
+public  class LoginController {
+	
+	
 	
 	@Autowired
 	private AuthorService authorService;
