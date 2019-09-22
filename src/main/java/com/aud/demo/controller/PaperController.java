@@ -45,7 +45,7 @@ public class PaperController {
 	AuthorServiceImpl authorService;
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+
 	@PostMapping("/save")
 	public String registerPaper(@RequestBody @Valid Paper paper, BindingResult bindingResult) {
 		

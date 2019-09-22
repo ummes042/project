@@ -151,6 +151,7 @@ $scope.deleteAuthor = function(index){
 }
 
 
+
 $scope.editAuthor = function(index){
 	console.log("Index:"+index);
 	copiedItem = Object.assign({}, copiedItem , $scope.authors[index] );

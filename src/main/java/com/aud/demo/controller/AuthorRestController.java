@@ -1,3 +1,4 @@
+
 package com.aud.demo.controller;
 
 import java.util.HashMap;
@@ -31,11 +32,6 @@ import com.aud.demo.model.User;
 import com.aud.demo.service.AuthorServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-
-
-
-
 
 @RestController
 @RequestMapping("/author/rest")
@@ -192,3 +188,4 @@ public String saveOrUpdate(User author, BindingResult bindingResult) {
 	}
 	
 }
+

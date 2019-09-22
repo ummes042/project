@@ -12,15 +12,6 @@ app.controller('authorhomeCtrl', ['$scope', '$http', function ($scope, $http) {
   
     $scope.CSRF_TOKEN = "";
     
-    
-   
-    
-    
-    
-   
-   
-   
-
     $scope.getPapers = function () {
         
         $http.get('/paper/fetch')

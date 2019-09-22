@@ -162,11 +162,16 @@ app.controller('fileCtrl', ['$scope', '$http', function ($scope, $http) {
         }
     };
     
+    
+    
     $scope.paper = {};
     $scope.papers = [];
+    
     $scope.submitPaper = function () {
+    	
     	$scope.CSRF_TOKEN = $("meta[name='_csrf']").attr("content");
         console.log( $scope.paper);
+        
         if($scope.myFile){
         	
         

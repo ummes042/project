@@ -288,49 +288,4 @@ public  class LoginController {
 	}
 	
 	
-	 // redirect based on roles
-	 
-//	 protected String determineTargetUrl(Authentication authentication) {
-//	        String url = "";
-//	 
-//	        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-//	 
-//	        List<String> roles = new ArrayList<String>();
-//	 
-//	        for (GrantedAuthority a : authorities) {
-//	            roles.add(a.getAuthority());
-//	        }
-//	 
-//	        if (isDba(roles)) {
-//	            url = "/db";
-//	        } else if (isAdmin(roles)) {
-//	            url = "/admin";
-//	        } else if (isUser(roles)) {
-//	            url = "/home";
-//	        } else {
-//	            url = "/accessDenied";
-//	        }
-//	 
-//	        return url;
-//	    }
-	
-//	 Code for auto login
-//	@Autowired
-//    protected AuthenticationManager authenticationManager;
-//	
-//	private void autoLogin(User user, HttpServletRequest request) {
-//        String username = user.getEmail();
-//        String password = user.getPassword();
-//        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
-//
-//        // generate session if one doesn't exist
-//        request.getSession();
-//
-//        token.setDetails(new WebAuthenticationDetails(request));
-//        Authentication authenticatedUser = authenticationManager.authenticate(token);
-//
-//        SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
-//        
-//    }
-//	
 }

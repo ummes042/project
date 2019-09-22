@@ -12,22 +12,13 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
-
-
-
-
-
-
-
-
 @Entity
 public class Paper {
 
-			@Id
-			@GeneratedValue(strategy = GenerationType.IDENTITY)
-			long id;
-			
+	        @Id
+	        @GeneratedValue(strategy = GenerationType.IDENTITY)
+	        Long id;
+	
 			@NotEmpty(message="*please provide title")
 			String title;
 			
@@ -59,12 +50,6 @@ public class Paper {
 //			
 			
 			
-			
-			
-			public long getId() {
-				return id;
-			}
-
 			@JsonIgnore
 			public User getAuthor() {
 				return author;
@@ -73,11 +58,13 @@ public class Paper {
 			public void setAuthor(User author) {
 				this.author = author;
 			}
-
-			public void setId(long id) {
+			
+			public Long getId() {
+				return id;
+			}
+			public void setId(Long id) {
 				this.id = id;
 			}
-
 			public String getTitle() {
 				return title;
 			}
