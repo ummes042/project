@@ -47,59 +47,139 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
-				<form autocomplete="off" action="#" th:action="@{/registration}"
-					th:object="${user}" method="post" class="form-horizontal"
+				<form autocomplete="off" action="#" th:action="@{/reviewer/registration}"
+					th:object="${reviewer}" method="post" class="form-horizontal"
 					role="form">
 					<h2>Registration Form</h2>
-					<div class="form-group">
-						<div class="col-sm-9">
+					
+					 <div class="form-group" style="margin-top:30px">
+						
+						<div class="col-md-3" >
 						<label th:if="${#fields.hasErrors('fname')}" th:errors="*{fname}"
-								class="validation-message"></label>
-						<input type="text" th:field="*{fname}" placeholder="Name"
+								class="validation-message" ></label>
+								<lable for = "Frist Name"> First Name <em>*</em> </lable>
+							</div>
+								<div class="col-sm-9">
+						 <input type="text" th:field="*{fname}" placeholder="First Name"
 								class="form-control" /> 
 						</div>
-					</div>
+					</div>   
 
 					<div class="form-group">
-						<div class="col-sm-9">
+						<div class="col-md-3">
 						<label	th:if="${#fields.hasErrors('lname')}" th:errors="*{lname}"
 								class="validation-message"></label>
+								<lable for = "Last Name"> Last Name <em>*</em> </lable></div>
+								<div class="col-sm-9">
 							<input type="text" th:field="*{lname}"
 								placeholder="Last Name" class="form-control" /> 
 						</div>
 					</div>
+					
 					<div class="form-group">
-						<div class="col-sm-9">
-							<input type="text" th:field="*{email}" placeholder="Email"
-								class="form-control" /> <label
-								th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+						<div class="col-md-3">
+						<label	th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
 								class="validation-message"></label>
+								<lable for = "Last Name"> Email <em>*</em> </lable></div>
+								<div class="col-sm-9">
+							<input type="text" th:field="*{email}"
+								placeholder="Email" class="form-control" /> 
 						</div>
 					</div>
+					
 					<div class="form-group">
+					<div class="col-md-3">
+					<label th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+								class="validation-message"></label>
+								<lable for = "Password"> Password <em>*</em> </lable></div>
 						<div class="col-sm-9">
 							<input type="password" th:field="*{password}"
-								placeholder="Password" class="form-control" /> <label
-								th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
-								class="validation-message"></label>
+								placeholder="Password" class="form-control" /> 
 						</div>
 					</div>
 					
-					
-					
 					<div class="form-group">
-						<div class="col-sm-9">
-						<label	th:if="${#fields.hasErrors('mobile')}" th:errors="*{mobile}"
+						<div class="col-md-3">
+						<label	th:if="${#fields.hasErrors('contact')}" th:errors="*{contact}"
 								class="validation-message"></label>
-							<input type="text" th:field="*{mobile}"
+								<lable for = "contact"> Contact <em>*</em> </lable></div>
+								<div class="col-sm-9">
+							<input type="text" th:field="*{contact}"
 								placeholder="Contact No." class="form-control" /> 
 						</div>
 					</div>
-					
-
 					<div class="form-group">
-						<div class="col-sm-9">
-							<button type="submit" class="btn btn-primary btn-block">Register User</button>
+						<div class="col-md-3">
+						<label	th:if="${#fields.hasErrors('address')}" th:errors="*{address}"
+								class="validation-message"></label>
+								<lable for = "University">Address <em>*</em> </lable></div>
+								<div class="col-sm-9">
+							<textarea rows="4" cols="65" placeholder="Full Adderss..." style=" border-radius: 5px;"></textarea>
+						</div>
+					</div> 
+					
+					<div class="form-group">
+						<div class="col-md-3">
+						<label	th:if="${#fields.hasErrors('qualification')}" th:errors="*{qualification}"
+								class="validation-message"></label>
+								<lable for = "qualification">Qualification <em>*</em> </lable></div>
+								<div class="col-sm-9">
+							<input type="text" th:field="*{qualification}"
+								placeholder="qualification" class="form-control" /> 
+						</div>
+					</div> 
+					
+					
+					<div class="form-group">
+						<div class="col-md-3">
+						<label	th:if="${#fields.hasErrors('department')}" th:errors="*{department}"
+								class="validation-message"></label>
+								<lable for = "department">Department <em>*</em> </lable></div>
+								<div class="col-sm-9">
+							<input type="text" th:field="*{department}"
+								placeholder="Department" class="form-control" /> 
+						</div>
+					</div> 
+					
+					<div class="form-group">
+						<div class="col-md-3">
+						<label	th:if="${#fields.hasErrors('Institute')}" th:errors="*{Institute}"
+								class="validation-message"></label>
+								<lable for = "Institute">Institute <em>*</em> </lable></div>
+								<div class="col-sm-9">
+							<input type="text" th:field="*{Institute}"
+								placeholder="Institute" class="form-control" /> 
+						</div>
+					</div> 
+					
+					<div class="form-group">
+						<div class="col-md-3">
+						<label	th:if="${#fields.hasErrors('prooffile')}" th:errors="*{prooffile}"
+								class="validation-message"></label>
+								<lable for = "prooffile">Upload ID Proof: <em>*</em> </lable></div>
+								<div class="col-sm-9">
+							<input type="file" name = "prooffile" id = "prooffile" th:field="*{prooffile}"
+								 class="form-control" /> 
+						</div>
+					</div> 
+					
+					<div class="form-group">
+						<div class="col-md-3">
+						<label	th:if="${#fields.hasErrors('cvfile')}" th:errors="*{cvfile}"
+								class="validation-message"></label>
+								<lable for = "cvfile">Upload CV <em>*</em> </lable></div>
+								<div class="col-sm-9">
+							<input type="file" name = "cvfile" id = "cvfile" th:field="*{cvfile}"
+								 class="form-control" /> 
+						</div>
+					</div> 
+					
+					
+					<div class="form-group">
+						<div class="col-md-2">
+							<button type="submit" class="btn btn-primary btn-block" value = "submit" name = "save" style = "margin-left:150px;">Submit</button>
+							<button type="submit" class="btn btn-primary btn-block" value = "submit" name = "save" style = "margin-top:-34px; margin-left:230px" >Reset</button>
+							
 						</div>
 					</div>
 					
@@ -110,9 +190,9 @@
 			</div>
 		</div>
 	</div>
-<div class="container-fluid" >
+<!--  <div class="container-fluid" >
 		<a href="http://www.audenberg.com"><img th:src="@{/images/powered.png}" class="img-responsive" 
 		alt="Powered by AudenBerg Technologies" /></a>
-	</div>
+	</div>  -->
 </body>
 </html>

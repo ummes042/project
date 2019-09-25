@@ -29,10 +29,11 @@ public class User {
 	String fname;
 	String lname;
 	String email;
+	String Institute;
 	
 	@Pattern(regexp="^([1-9])\\d{9}", message = "*Please provide a valid contact number")
 //	@NotEmpty(message = "*Please provide your contact number")
-	String mobile;
+	String contact;
 	
 	@JsonIgnore
 	String password;
@@ -81,14 +82,14 @@ public class User {
 	
 	
 	public User(@NotEmpty(message = "*Please provide First Name") String fname, String lname, String email,
-			@Pattern(regexp = "^([1-9])\\d{9}", message = "*Please provide a valid contact number") String mobile,
-			String password, String line1, String line2, String city, String state, String country, String pincode,
+			@Pattern(regexp = "^([1-9])\\d{9}", message = "*Please provide a valid contact number") String contact,
+			String password, String line1, String line2, String city, String state, String country, String pincode, String Institute,
 			int active, int otp, boolean verified, Set<Role> roles) {
 		super();
 		this.fname = fname;
 		this.lname = lname;
 		this.email = email;
-		this.mobile = mobile;
+		this.contact = contact;
 		this.password = password;
 		this.line1 = line1;
 		this.line2 = line2;
@@ -96,17 +97,19 @@ public class User {
 		this.state = state;
 		this.country = country;
 		this.pincode = pincode;
+		this.Institute = Institute;
 		this.active = active;
 		this.otp = otp;
 		this.verified = verified;
 		this.roles = roles;
+		
 	}
 
 
 
 	@Override
 	public String toString() {
-		return "Author [id=" + id + ", fname=" + fname + ", lname=" + lname + ", email=" + email + ", mobile=" + mobile + ", line1=" + line1
+		return "Author [id=" + id + ", fname=" + fname + ", lname=" + lname + ", email=" + email + ", contact=" + contact + ", line1=" + line1
 				+ ", line2=" + line2 + ", city=" + city + ", state=" + state + ", country=" + country + ", pincode="
 				+ pincode + "]";
 	
@@ -115,15 +118,15 @@ public class User {
 	
 	
 	public User(Long id, @NotEmpty(message = "*Please provide First Name") String fname, String lname, String email,
-			@Pattern(regexp = "^([1-9])\\d{9}", message = "*Please provide a valid contact number") String mobile,
-			String password, String line1, String line2, String city, String state, String country, String pincode,
+			@Pattern(regexp = "^([1-9])\\d{9}", message = "*Please provide a valid contact number") String contact,
+			String password, String line1, String line2, String city, String state, String country, String pincode, String Institute,
 			int active, int otp, boolean verified) {
 		super();
 		this.id = id;
 		this.fname = fname;
 		this.lname = lname;
 		this.email = email;
-		this.mobile = mobile;
+		this.contact = contact;
 		this.password = password;
 		this.line1 = line1;
 		this.line2 = line2;
@@ -131,13 +134,14 @@ public class User {
 		this.state = state;
 		this.country = country;
 		this.pincode = pincode;
+		this.Institute = Institute;
 		this.active = active;
 		this.otp = otp;
 		this.verified = verified;
 	}
 
 	public User(Long id, @NotEmpty(message = "*Please provide First Name") String fname, String lname, String email,
-			@Pattern(regexp = "^([1-9])\\d{9}", message = "*Please provide a valid contact number") String mobile,
+			@Pattern(regexp = "^([1-9])\\d{9}", message = "*Please provide a valid contact number") String contact,
 			String password, String line1, String line2, String city, String state, String country, String pincode,
 			int active, int otp, boolean verified, Set<Role> roles) {
 		super();
@@ -145,7 +149,7 @@ public class User {
 		this.fname = fname;
 		this.lname = lname;
 		this.email = email;
-		this.mobile = mobile;
+		this.contact = contact;
 		this.password = password;
 		this.line1 = line1;
 		this.line2 = line2;
@@ -242,11 +246,11 @@ public class User {
 	}
 
 	public String getMobile() {
-		return mobile;
+		return contact;
 	}
 
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
+	public void setMobile(String contact) {
+		this.contact = contact;
 	}
 
 	public Set<Role> getRoles() {
@@ -280,6 +284,20 @@ public class User {
 	public void setActive(int active) {
 		this.active = active;
 	}
+
+
+
+	public String getInstitute() {
+		return Institute;
+	}
+
+
+
+	public void setInstitute(String institute) {
+		Institute = institute;
+	}
+	
+	
 	
 	
 	
