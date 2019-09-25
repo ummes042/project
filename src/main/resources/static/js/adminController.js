@@ -1,6 +1,8 @@
 
 
 
+
+
 var app = angular.module('myApp', []);
 app.controller('adminCtrl', function($scope,$http) {
 	
@@ -29,11 +31,9 @@ app.controller('adminCtrl', function($scope,$http) {
     $scope.author= $scope.initAuthor;
     
     $scope.registerAuthor = function(){
-    	
     	$scope.CSRF_TOKEN = $("meta[name='_csrf']").attr("content");
     	console.log(angular.toJson($scope.author));
     	console.log("CSRF_Token:"+ $scope.CSRF_TOKEN);
-    	
     	var method = "POST";
     	
     	if($scope.author.id>0){
@@ -55,7 +55,7 @@ app.controller('adminCtrl', function($scope,$http) {
         	
         	console.log(response);
         	if(response.data.type=="success"){
-        		//$scope.errors = {};
+        		$scope.errors = {};
         	if(method=="POST"){
         	 $scope.authors.push(response.data.obj);   //insert
         	}else{
@@ -149,6 +149,7 @@ $scope.deleteAuthor = function(index){
      	console.log(response);
      });
 }
+
 
 
 $scope.editAuthor = function(index){
