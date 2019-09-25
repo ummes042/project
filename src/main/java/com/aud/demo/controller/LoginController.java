@@ -1,4 +1,4 @@
-package com.aud.demo.controller;
+ package com.aud.demo.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,6 +31,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.aud.demo.model.Reviewer;
 import com.aud.demo.model.Role;
 import com.aud.demo.model.User;
 import com.aud.demo.repository.RoleRepository;
@@ -99,10 +100,15 @@ public  class LoginController {
 					modelAndView.setViewName("redirect:/officer");
 					return modelAndView;
 				}
+				else if(roles.contains("REVIEWER")) {
+					System.out.println("reached REVIEWER ROle");
+					modelAndView.setViewName("redirect:reviewer");
+					return modelAndView;
 			}
 			
-		}
-	  
+			}
+		} 
+//			
 	  else {
 			System.out.println("reached new author");
 			modelAndView.addObject("userName", "" );
@@ -113,8 +119,9 @@ public  class LoginController {
 		
 		
 		return modelAndView;
+		
+
 	}
-	
 	
 	@RequestMapping(value="/registration", method = RequestMethod.GET)
 	public ModelAndView registration(){
@@ -122,7 +129,7 @@ public  class LoginController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User author = authorService.findAuthorByEmail(auth.getName());
 		ModelAndView modelAndView = new ModelAndView();
-		if(author==null) {
+		if(author==null) {   //new author
 		
 		User author1 = new User();
 		modelAndView.addObject("user", author1);
@@ -181,18 +188,87 @@ public  class LoginController {
 		return modelAndView;
 	}
 	
+<<<<<<< HEAD
+=======
+	@RequestMapping(value="/reviewer/registration", method = RequestMethod.GET)
+	public ModelAndView reviewerregistration(){
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Reviewer reviewer = reviewerservice.findReviewerByEmail(auth.getName());
+		ModelAndView modelAndView = new ModelAndView();
+		if(reviewer==null) {
+		
+		Reviewer author1 = new Reviewer();
+		modelAndView.addObject("reviewer", author1);
+		modelAndView.setViewName("reviewerregistration");
+		return modelAndView;
+		}
+		
+		modelAndView.addObject("userName", "Logged in as:" + reviewer.getFname() + " " + reviewer.getLname() );
+		modelAndView.setViewName("login");
+		return modelAndView;
+		
+	}
+	
+	@Transactional
+	@RequestMapping(value = "/reviewer/registration", method = RequestMethod.POST)
+	public ModelAndView createNewReviewer(@Valid Reviewer reviewer, BindingResult bindingResult,HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView();
+		Reviewer reviewerExits = reviewerservice.findReviewerByEmail(reviewer.getEmail());
+		if (reviewerExits != null) {
+			bindingResult
+					.rejectValue("email", "error.reviewer",
+							"There is already a user registered with the email provided");
+		}
+		if (bindingResult.hasErrors()) {
+			modelAndView.setViewName("reviewerregistration");
+		} else {
+			
+			reviewer.setVerified(false);
+			reviewer.setActive(1);
+			Random rnd = new Random();
+			int otp = 100000 + rnd.nextInt(900000);
+			reviewer.setOtp(otp);
+			
+			Role author_role = new Role(3,"REVIEWER");
+		   
+			
+			
+			reviewer.setPassword( new BCryptPasswordEncoder().encode(reviewer.getPassword()));
+			long id = reviewerservice.saveReviewer(reviewer);
+			reviewer.setId(id);
+			//reviewer.setRoles(new HashSet<Role>(Arrays.asList(author_role)));
+			reviewerservice.saveReviewer(reviewer);
+			
+			
+//			Mail mail = new Mail();
+//			mail.sendMail(author);
+			
+			modelAndView.addObject("successMessage", "OTP sent to your registered email, Login to verify email");
+			
+//			modelAndView.addObject("user", new User());
+//			autoLogin(user,request );
+			
+			modelAndView.setViewName("login");
+			
+		}
+		return modelAndView;
+	}
+	
+>>>>>>> 11c2d1ac685f9edabb6ca776650aa4f409fa9cc4
+	
 	
 	@RequestMapping(value = "/validateUser", method = RequestMethod.POST)
 	public ModelAndView validateNewAuthor(@RequestParam("otp") int otp) {
 		ModelAndView modelAndView = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User author = authorService.findAuthorByEmail(auth.getName());
-		
+				
 		if (author != null) {
 		 if(author.getOtp()==otp) {
 			author.setVerified(true);
 			Role author_role = new Role(2,"AUTHOR");
-		  
+			
 			
 			author.setRoles(new HashSet<Role>(Arrays.asList(author_role)));
 			
@@ -208,11 +284,11 @@ public  class LoginController {
 			
 			modelAndView.setViewName("redirect:/author");
 			
-			
 		 }else {
 			
 			 modelAndView.addObject("successMessage", "Wrong OTP, Kindly verify.");
 			 modelAndView.setViewName("verifyOTP");
+			
 				
 		 }
 		 
@@ -220,6 +296,49 @@ public  class LoginController {
 		
 		return modelAndView;
 	}
+	
+//	@RequestMapping(value = "/validateReviewer", method = RequestMethod.POST)
+//	public ModelAndView validateNewReviewer(@RequestParam("otp") int otp) {
+//		ModelAndView modelAndView = new ModelAndView();
+//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//		User reviewer = reviewerservice.findReviewerByEmail(auth.getName());
+//		
+//		if (reviewer != null) {
+//		 if(reviewer.getOtp()==otp) {
+//			 reviewer.setVerified(true);
+//			Role author_role = new Role(3,"REVIEWER");
+//		  
+//			
+//			reviewer.setRoles(new HashSet<Role>(Arrays.asList(author_role)));
+//			
+//	
+//			List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>(auth.getAuthorities());
+//			authorities.add(new SimpleGrantedAuthority("USER"));
+//			Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(),auth.getCredentials(),authorities);
+//			SecurityContextHolder.getContext().setAuthentication(newAuth);
+//			
+//			reviewerservice.updateReviewer(reviewer);
+//						
+//			//check if some data is available pertaining to the student and return view accordingly.
+//			
+//			modelAndView.setViewName("redirect:/reviewer");
+//			
+//			
+//		 }else {
+//			
+//			 modelAndView.addObject("successMessage", "Wrong OTP, Kindly verify.");
+//			 modelAndView.setViewName("verifyotpreviewer");
+//				
+//		 }
+//		 
+//	}
+//		
+//		return modelAndView;
+//	}
+	
+	
+
+	
 	
 	
 	public void logout() {

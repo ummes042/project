@@ -107,8 +107,7 @@ public String saveOrUpdate(Paper paper, BindingResult bindingResult) {
 				e.printStackTrace();
 			}
 		}else {
-	    //paper.setPassword( new BCryptPasswordEncoder().encode(paper.getPassword()));
-			
+	    
 		paper.setStatus(PaperStatus.Processing);	
 		
 	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();

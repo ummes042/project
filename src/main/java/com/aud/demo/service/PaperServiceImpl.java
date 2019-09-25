@@ -10,10 +10,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.aud.demo.model.User;
 import com.aud.demo.model.Paper;
+import com.aud.demo.model.User;
 import com.aud.demo.repository.PaperRepository;
-import com.aud.demo.repository.RoleRepository;
 
 @Service
 public class PaperServiceImpl implements PaperService {
@@ -23,7 +22,7 @@ public class PaperServiceImpl implements PaperService {
 
 	@Autowired
 	AuthorServiceImpl authorService;
-    
+	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	

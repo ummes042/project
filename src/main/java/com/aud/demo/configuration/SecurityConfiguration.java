@@ -51,6 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 					.antMatchers("/registration").permitAll()
 					.antMatchers("/validate").permitAll()
 					.antMatchers("/test").permitAll()
+					.antMatchers("/reviewer/registration").permitAll()
 					.antMatchers("/validateUser").permitAll()
 					.antMatchers("/forgotPassword").permitAll()
 					.antMatchers("/author").hasAnyAuthority(new String[] {"AUTHOR","ADMIN"})

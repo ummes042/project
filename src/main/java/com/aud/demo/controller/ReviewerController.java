@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class ReviewerController {
 
 	
+
 	@RequestMapping(value="/reviewer" ,method = RequestMethod.GET)
 	public String index() {
 		return "reviewerhome";

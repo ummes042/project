@@ -11,60 +11,140 @@
   
       
        <link rel="stylesheet" type="text/css" href="css/util.css">
-
+     <!--   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">  -->
        <script src="js/bootstrap-notify.js"></script>
        <style>
            .responsive{
                 width: 300px;
                 height:  200px;
-           }
+                
+                  }
+            tr:hover{
+                 background-color:#FFCACA;
+                 }
        </style>
        	<meta name="_csrf" th:content="${_csrf.token}"/>
 <!-- default header name is X-CSRF-TOKEN -->
 <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+ 
 </head>
     
     <body  ng-App="App">
         <div ng-controller="fileCtrl">
             
-            
-           
+             <div th:replace="header :: header"> </div>  
             <div class="text-center">
                 <div style="display: inline-block;">
         <form name="imagerecon">
-             
-             <input type="hidden" class="form-control" id="id" ng-model="paper.id">
-         <div class="form-group">
+         <input type="hidden" class="form-control" id="id" ng-model="paper.id">
+          
+         <div style="margin-top:90px; ">
+           <fieldset>
+         
+               <legend align="left" style="color:#09F; width:160px;">Paper Details:</legend>   
+		  
+            <div class="form-group">
          <label class="error">{{errors.titleErr}}</label><br>
-		    <label for="title">Paper Title:</label>
+		   <label for="Title">Title:</label>
 		    <input type="text" class="form-control" id="fname" ng-model="paper.title">
-		  </div>
-		   <div class="form-group">
-		   <label class="error">{{errors.keywordsErr}}</label><br>
-		    <label for="lname">keywords:</label>
-		    <input type="text" class="form-control" id="lname" ng-model="paper.keywords">
-		  </div>
-		  <div class="form-group">
-		    <label for="description">Description:</label>
-		    <input type="text" class="form-control" id="description" ng-model="paper.description">
-		  </div>
-		  <div class="form-group">
-		    <label for="filename">FileName:</label>
-		    <input type="text" class="form-control" id="filename" ng-model="paper.filename">
-		  </div>
-		   <div class="form-group">
-		   
-		    <label for="Comments">Comments:</label>
-		    <input type="text" class="form-control" id="comments" ng-model="paper.comments">
-		  </div>
-		  <div class="form-group">
-		    <label for="experts">Experts:</label>
-		    <input type="text" class="form-control" id="experts" ng-model="paper.experts">
 		  </div>
 		  <div class="form-group">
 		    <label for="category">category:</label>
 		    <input type="text" class="form-control" id="category" ng-model="paper.category">
 		  </div>
+		   <div class="form-group">
+		   <label class="error">{{errors.keywordsErr}}</label><br>
+		    <label for="keywords">keywords:</label>
+		    <input type="text" class="form-control" id="keywords" ng-model="paper.keywords">
+		  </div>
+		  <div class="form-group">
+		  <p>Description:</p>
+		   <textarea rows="4" cols="50" placeholder="Paper Description..."></textarea>
+		   </fieldset>
+		   </div><br>  
+		  
+	<!-- 	  <div class="form-group">
+		    <label for="description">Description:</label>
+		    <input type="text" class="form-control" id="description" ng-model="paper.description">
+		  </div>   -->
+		  
+		  <div>
+         
+         <fieldset>
+         
+               <legend align="left" style="color:#09F; width:190px;">Author Details:</legend>   
+		  
+		  <div class="form-group">
+		    <label for="authorname">Author Name:</label>
+		    <input type="text" class="form-control" id="authorname" ng-model="user.fname">
+		  </div>
+		  
+		  <div class="form-group">
+		    <label for="Author Institute/Organization">Author Institute/Organization:</label>
+		    <input type="text" class="form-control" id="Author Institute/Organization" ng-model="user.Institute">
+		  </div>
+		  
+		  <div class="form-group">
+		    <label for="Main Author Email-ID">Main Author Email-ID:</label>
+		    <input type="text" class="form-control" id="Main Author Email-ID" ng-model="user.email">
+		  </div>
+		  
+		  <div class="form-group">
+		    <label for="Contact Number">Contact Number:</label>
+		    <input type="text" class="form-control" id="contact Number" ng-model="user.contact">
+		  </div>
+		  
+		  <div class="form-group">
+		    <label for="Contact Number">Country:</label>
+		    <input type="text" class="form-control" id="Country" ng-model="user.country">
+		  </div>
+		  
+		  </fieldset>
+		   </div> <br>
+		   
+		   <div>
+         
+         <fieldset>
+         
+               <legend align="left" style="color:#09F; width:200px;">Co-Author Details:</legend>   
+             
+		  
+		   <div class="form-group">
+		    <label for="Co-Author 1">Co-Author 1:</label>
+		    <input type="text" class="form-control" id="Co-Author 1" ng-model="user.co-author1">
+		  </div>
+		  
+		  <div class="form-group">
+		    <label for="Co-Author 2">Co-Author 2:</label>
+		    <input type="text" class="form-control" id="Co-Author 2" ng-model="user.co-author2">
+		  </div>
+		  
+		  <div class="form-group">
+		    <label for="Co-Author 3">Co-Author 3:</label>
+		    <input type="text" class="form-control" id="Co-Author 3" ng-model="user.co-author3">
+		  </div>
+		  
+		  <div class="form-group">
+		    <label for="Co-Author 4">Co-Author 4:</label>
+		    <input type="text" class="form-control" id="Co-Author 4" ng-model="user.co-author4">
+		  </div>
+		  </fieldset>
+		   </div>
+		  
+		  
+		 
+		  
+		  
+		  
+      <!--     <div class="form-group">
+		   <label for="Comments">Comments:</label>
+		    <input type="text" class="form-control" id="comments" ng-model="paper.comments">
+		  </div>
+		  <div class="form-group">
+		    <label for="experts">Experts:</label>
+		    <input type="text" class="form-control" id="experts" ng-model="paper.experts">
+		  </div>  -->
+		  
 		  
 		  <div class="form-group" style="padding:20px;">
                 <label for="userImage">Choose an Image for recognition:</label>
@@ -72,7 +152,7 @@
             
             </div>  
             
-		   <button type="button" ng-click="submitPaper()" class="btn btn-primary">submit</button>
+		   <button type="button" ng-click="submitPaper()" class="btn btn-primary">Upload</button>
 		</form>
             
                
@@ -105,7 +185,7 @@
             
             
                 <script src="../js/fileUploadController.js"></script>     
-            
+            <div th:replace="footer :: footer"></div>
         </div>
     </body>
 </html>
