@@ -106,7 +106,7 @@ public  class LoginController {
 				}
 				else if(roles.contains("REVIEWER")) {
 					System.out.println("reached REVIEWER ROle");
-					modelAndView.setViewName("redirect:reviewer");
+					modelAndView.setViewName("redirect:/reviewer");
 					return modelAndView;
 			}
 			
