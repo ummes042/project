@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -19,11 +21,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 @Entity
+@Inheritance(
+	    strategy = InheritanceType.JOINED
+	)
 public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
+	long id;
 	
 	@NotEmpty(message = "*Please provide First Name")
 	String fname;
@@ -245,11 +250,11 @@ public class User {
 		this.email = email;
 	}
 
-	public String getMobile() {
+	public String getContact() {
 		return contact;
 	}
 
-	public void setMobile(String contact) {
+	public void setContact(String contact) {
 		this.contact = contact;
 	}
 

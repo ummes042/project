@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -31,11 +32,13 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.aud.demo.model.ROLES;
 import com.aud.demo.model.Reviewer;
 import com.aud.demo.model.Role;
 import com.aud.demo.model.User;
 import com.aud.demo.repository.RoleRepository;
 import com.aud.demo.service.AuthorService;
+import com.aud.demo.service.ReviewerService;
 
 
 
@@ -48,6 +51,9 @@ public  class LoginController {
 	
 	@Autowired
 	private AuthorService authorService;
+	
+	@Autowired
+	private ReviewerService reviewerservice;
 	
 	
 	@Autowired
@@ -102,7 +108,7 @@ public  class LoginController {
 				}
 				else if(roles.contains("REVIEWER")) {
 					System.out.println("reached REVIEWER ROle");
-					modelAndView.setViewName("redirect:reviewer");
+					modelAndView.setViewName("redirect:/reviewer");
 					return modelAndView;
 			}
 			
@@ -188,13 +194,12 @@ public  class LoginController {
 		return modelAndView;
 	}
 	
-<<<<<<< HEAD
-=======
+
 	@RequestMapping(value="/reviewer/registration", method = RequestMethod.GET)
 	public ModelAndView reviewerregistration(){
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Reviewer reviewer = reviewerservice.findReviewerByEmail(auth.getName());
+		User reviewer = authorService.findAuthorByEmail(auth.getName());
 		ModelAndView modelAndView = new ModelAndView();
 		if(reviewer==null) {
 		
@@ -214,7 +219,7 @@ public  class LoginController {
 	@RequestMapping(value = "/reviewer/registration", method = RequestMethod.POST)
 	public ModelAndView createNewReviewer(@Valid Reviewer reviewer, BindingResult bindingResult,HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		Reviewer reviewerExits = reviewerservice.findReviewerByEmail(reviewer.getEmail());
+		User reviewerExits = authorService.findAuthorByEmail(reviewer.getEmail());
 		if (reviewerExits != null) {
 			bindingResult
 					.rejectValue("email", "error.reviewer",
@@ -255,7 +260,7 @@ public  class LoginController {
 		return modelAndView;
 	}
 	
->>>>>>> 11c2d1ac685f9edabb6ca776650aa4f409fa9cc4
+
 	
 	
 	@RequestMapping(value = "/validateUser", method = RequestMethod.POST)
@@ -267,23 +272,47 @@ public  class LoginController {
 		if (author != null) {
 		 if(author.getOtp()==otp) {
 			author.setVerified(true);
-			Role author_role = new Role(2,"AUTHOR");
+
 			
+			Set<Role> roles = author.getRoles();
 			
-			author.setRoles(new HashSet<Role>(Arrays.asList(author_role)));
+//			author.setRoles(roles);
 			
 	
 			List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>(auth.getAuthorities());
-			authorities.add(new SimpleGrantedAuthority("USER"));
-			Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(),auth.getCredentials(),authorities);
-			SecurityContextHolder.getContext().setAuthentication(newAuth);
+			
+		
+			
+			
 			
 			authorService.updateAuthor(author);
-						
+			
+			for(Role r : roles)
+			{
+				System.out.println(r.getRole());
+				
+				if(r.getRole().contains("AUTHOR")) {
+					authorities.add(new SimpleGrantedAuthority("AUTHOR"));
+					modelAndView.setViewName("redirect:/author");
+					
+				}else if(r.getRole().contains("ADMIN")) {
+					authorities.add(new SimpleGrantedAuthority("ADMIN"));
+					modelAndView.setViewName("redirect:/officer");
+					
+				}else if(r.getRole().contains("REVIEWER")){ 
+					authorities.add(new SimpleGrantedAuthority("REVIEWER"));
+					modelAndView.setViewName("redirect:/reviewer");
+					
+				}
+				
+			}
+			
 			//check if some data is available pertaining to the student and return view accordingly.
 			
-			modelAndView.setViewName("redirect:/author");
 			
+			Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(),auth.getCredentials(),authorities);
+			SecurityContextHolder.getContext().setAuthentication(newAuth);
+			return modelAndView;
 		 }else {
 			
 			 modelAndView.addObject("successMessage", "Wrong OTP, Kindly verify.");
