@@ -238,11 +238,10 @@ public  class LoginController {
 			Role author_role = new Role(3,"REVIEWER");
 		   
 			
-			
 			reviewer.setPassword( new BCryptPasswordEncoder().encode(reviewer.getPassword()));
 			long id = reviewerservice.saveReviewer(reviewer);
 			reviewer.setId(id);
-			//reviewer.setRoles(new HashSet<Role>(Arrays.asList(author_role)));
+			reviewer.setRoles(new HashSet<Role>(Arrays.asList(author_role)));
 			reviewerservice.saveReviewer(reviewer);
 			
 			
@@ -326,49 +325,7 @@ public  class LoginController {
 		return modelAndView;
 	}
 	
-//	@RequestMapping(value = "/validateReviewer", method = RequestMethod.POST)
-//	public ModelAndView validateNewReviewer(@RequestParam("otp") int otp) {
-//		ModelAndView modelAndView = new ModelAndView();
-//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//		User reviewer = reviewerservice.findReviewerByEmail(auth.getName());
-//		
-//		if (reviewer != null) {
-//		 if(reviewer.getOtp()==otp) {
-//			 reviewer.setVerified(true);
-//			Role author_role = new Role(3,"REVIEWER");
-//		  
-//			
-//			reviewer.setRoles(new HashSet<Role>(Arrays.asList(author_role)));
-//			
-//	
-//			List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>(auth.getAuthorities());
-//			authorities.add(new SimpleGrantedAuthority("USER"));
-//			Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(),auth.getCredentials(),authorities);
-//			SecurityContextHolder.getContext().setAuthentication(newAuth);
-//			
-//			reviewerservice.updateReviewer(reviewer);
-//						
-//			//check if some data is available pertaining to the student and return view accordingly.
-//			
-//			modelAndView.setViewName("redirect:/reviewer");
-//			
-//			
-//		 }else {
-//			
-//			 modelAndView.addObject("successMessage", "Wrong OTP, Kindly verify.");
-//			 modelAndView.setViewName("verifyotpreviewer");
-//				
-//		 }
-//		 
-//	}
-//		
-//		return modelAndView;
-//	}
-	
-	
 
-	
-	
 	
 	public void logout() {
 	    HttpServletRequest request =

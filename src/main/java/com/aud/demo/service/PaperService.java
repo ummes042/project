@@ -15,5 +15,6 @@ public interface PaperService {
 	public void deleteById(long id);
 	public boolean updatePaperWithFilename(String filename,long pid);
 	public List<Paper> findPapersById(User author_id);
+	
 
 }

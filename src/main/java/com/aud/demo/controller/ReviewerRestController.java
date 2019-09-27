@@ -192,6 +192,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aud.demo.mail.Mail;
+import com.aud.demo.model.Paper;
 import com.aud.demo.model.Role;
 import com.aud.demo.model.User;
 import com.aud.demo.service.AuthorServiceImpl;
@@ -348,9 +349,9 @@ public String saveOrUpdate(User author, BindingResult bindingResult) {
 		
 		return authorService.findAll();
 		
-		
-		
 	}
+	
+	
 	
 }
 

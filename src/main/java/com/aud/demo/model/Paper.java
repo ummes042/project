@@ -1,11 +1,14 @@
 package com.aud.demo.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -42,9 +45,7 @@ public class Paper {
 			@Enumerated(EnumType.STRING)
 		    Categories category;
 			
-//			@ManyToOne
-//			private Author author;
-//			
+			
 //			@ManyToMany(mappedBy = "papers")
 //			List<Reviewer> reviewers;
 //			
@@ -121,8 +122,6 @@ public class Paper {
 				this.category = category;
 			}
 
-			
-			
 			public PaperStatus getStatus() {
 				return status;
 			}
@@ -130,6 +129,14 @@ public class Paper {
 			public void setStatus(PaperStatus status) {
 				this.status = status;
 			}
+			
+//			public List<Reviewer> getReviewers() {
+//				return reviewers;
+//			}
+//
+//			public void setReviewers(List<Reviewer> reviewers) {
+//				this.reviewers = reviewers;
+//			}
 
 			public Paper(long id, @NotEmpty(message = "*please provide title") String title,
 					@Size(min = 5, message = "*Please provide atleast 5 keywords") String keywords, String description,
