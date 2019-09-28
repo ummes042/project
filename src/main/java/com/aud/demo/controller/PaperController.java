@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -24,14 +24,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aud.demo.model.Categories;
 import com.aud.demo.model.Paper;
 import com.aud.demo.model.PaperStatus;
-import com.aud.demo.model.Reviewer;
 import com.aud.demo.model.User;
 import com.aud.demo.service.AuthorServiceImpl;
 import com.aud.demo.service.PaperServiceImpl;
-import com.aud.demo.service.ReviewerServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
