@@ -49,7 +49,8 @@
                     <th style="text-align: center">Experts</th>
                        <th style="text-align: center">Status</th>  -->
                        
-                          <th style="text-align: center">Action</th> 
+                       <th style="text-align: center">View / Download</th>
+                        <th style="text-align: center">Action</th> 
                     </thead>
                     <tbody>
                         <tr ng-repeat="x in papers">
@@ -59,8 +60,12 @@
                              <td>{{x.status}}</td>
                              <td>{{x.id}}</td>
                              
-                             <button ng-if="x.status=='processing'" type="button" class="btn btn-danger"  >Download</button></td>
-                             <td ng-elif>No action</td>
+                             <td ng-if="x.status=='Processing'"><a type="button" href="{{x.filename}}" class="btn btn-primary" >View</a></td>
+                             <td ng-if="x.status!='Processing'">No action</td>
+                             
+                             <td ng-if="x.status=='Processing'"><a type="button" href="{{x.filename}}" class="btn btn-primary" >Accept</a></td>
+                             <td ng-if="x.status=='Processing'"><a type="button" href="{{x.filename}}" class="btn btn-primary" >Reject</a></td>
+                             
                              
                          <!--       <td>{{x.keywords}}</td>
                              <td>{{x.experts}}</td>

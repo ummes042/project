@@ -178,6 +178,8 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -190,12 +192,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.aud.demo.mail.Mail;
+import com.aud.demo.model.Categories;
 import com.aud.demo.model.Paper;
+import com.aud.demo.model.Reviewer;
 import com.aud.demo.model.Role;
 import com.aud.demo.model.User;
 import com.aud.demo.service.AuthorServiceImpl;
+import com.aud.demo.service.ReviewerServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -206,7 +212,8 @@ public class ReviewerRestController {
 	@Autowired
 	AuthorServiceImpl authorService;
 	
-	
+	@Autowired
+	ReviewerServiceImpl reviewerservice;
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -348,6 +355,34 @@ public String saveOrUpdate(User author, BindingResult bindingResult) {
 		
 		return authorService.findAll();
 		
+	}
+	
+	@GetMapping("/fetch/paper")
+	public List<Paper> fetchPapersForReviewer() {
+		
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Reviewer reviewer = reviewerservice.findReviewerByEmail(auth.getName());
+	    Categories category = reviewer.getResearch_interests();
+		logger.info("Reviewer category -> {}",category);
+         
+		
+		 List<Paper> papersForReviewer = reviewerservice.fetchPapersForReviewer(category);
+		 int i = 0;
+		 for(Paper p : papersForReviewer) {
+			 String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+		                .path("/downloadFile/")
+		                .path(p.getFilename())
+		                .toUriString();
+			
+			 papersForReviewer.get(i).setFilename(fileDownloadUri);
+			i++;
+		 }
+		 
+		 
+		 return papersForReviewer;
+         
+	       
 	}
 	
 	
