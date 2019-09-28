@@ -1,10 +1,10 @@
 package com.aud.demo.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,7 +27,11 @@ public class Reviewer extends User{
 //	String address;
 //	String email;
 //	String contact;
-	String research_interests;
+	
+	
+	@Enumerated(EnumType.STRING)
+    Categories research_interests;
+	
 	String cvfile;
 	String prooffile;
 //	String password;
