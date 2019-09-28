@@ -29,8 +29,13 @@ public class Reviewer extends User{
 //	String address;
 //	String email;
 //	String contact;
+
+	
+	
+
 	@Enumerated(EnumType.STRING)
     Categories research_interests;
+
 	String cvfile;
 	String prooffile;
 //	String password;

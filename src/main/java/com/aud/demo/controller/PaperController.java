@@ -44,8 +44,7 @@ public class PaperController {
 	@Autowired
 	PaperServiceImpl paperService;
 	
-	@Autowired
-	ReviewerServiceImpl reviewerservice;
+	
 	
 	
 	@Autowired
@@ -185,17 +184,7 @@ public String saveOrUpdate(Paper paper, BindingResult bindingResult) {
 	}
 	
 	
-	@GetMapping("/reviewer/fetch")
-	public List<Paper> fetchPapersForReviewer() {
-		
-		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Reviewer reviewer = reviewerservice.findReviewerByEmail(auth.getName());
-	    Categories category = reviewer.getResearch_interests();
-		logger.info("Reviewer category -> {}",category);
-         return reviewerservice.fetchPapersForReviewer(category);
-	       
-	}
+	
 	
 //	@GetMapping("/paper/accept/{paperdId}")
 //	public String paperaccept(@PathVariable long paperId) {
