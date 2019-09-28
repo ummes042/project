@@ -3,14 +3,18 @@ package com.aud.demo.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.aud.demo.model.Categories;
+import com.aud.demo.model.Paper;
 import com.aud.demo.model.Reviewer;
-import com.aud.demo.model.User;
 import com.aud.demo.repository.ReviewerRepository;
 import com.aud.demo.repository.RoleRepository;
 
@@ -22,6 +26,9 @@ public class ReviewerServiceImpl implements ReviewerService{
 	
 	@Autowired
 	RoleRepository RoleRepo;
+	
+	@Autowired
+	EntityManager em;
 	
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -73,8 +80,27 @@ public class ReviewerServiceImpl implements ReviewerService{
 	public void deleteById(long id) {
 		// TODO Auto-generated method stub
 		ReviewerRepo.deleteById(id);
-	}
 	
 	
 	
 }
+
+	@Override
+	public List<Paper> fetchPapersForReviewer(Categories category) {
+		
+		// Using @query and JPQL
+//		return ReviewerRepo.fetchPapersForReviewer(category);
+		String sqlString =  "Select * FROM Paper p where p.status= 'Processing' and p.category = :category";
+		Query q = em.createNativeQuery(sqlString,Paper.class);
+		logger.info("Category is :{}",category);
+		String scategory = category.toString();
+		q.setParameter("category", scategory);
+		return q.getResultList();
+		
+	}
+
+	
+	
+}
+
+

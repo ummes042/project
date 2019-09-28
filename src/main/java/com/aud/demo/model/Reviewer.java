@@ -18,6 +18,8 @@ public class Reviewer extends User{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	long id;
 	
+	
+	
 
 //	String fname;
 //	String lname;
@@ -27,11 +29,16 @@ public class Reviewer extends User{
 //	String address;
 //	String email;
 //	String contact;
+<<<<<<< HEAD
 	
 	
 	@Enumerated(EnumType.STRING)
     Categories research_interests;
 	
+=======
+	@Enumerated(EnumType.STRING)
+    Categories research_interests;
+>>>>>>> 2f97e4c66985856fec6d6e6abcdc8b271d30b06e
 	String cvfile;
 	String prooffile;
 //	String password;
@@ -42,7 +49,15 @@ public class Reviewer extends User{
 	
 	
 	// list of categories to be assigned by admin
-//	List<Categories> allowedCategories = new ArrayList<Categories>();
+	//List<Categories> allowedCategories = new ArrayList<Categories>();
+	
+	
+
+//	
+//	@ManyToMany
+//	@JoinTable(name = "reviewer_paper", joinColumns = @JoinColumn(name = "reviewer_id"), inverseJoinColumns = @JoinColumn(name = "paper_id"))
+//	Set<Paper> papers;
+
 	
 	public Long getId() {
 		return id;
@@ -91,15 +106,20 @@ public class Reviewer extends User{
 //	public void setContact(String contact) {
 //		this.contact = contact;
 //	}
-	public String getResearch_interests() {
-		return research_interests;
-	}
-	public void setResearch_interests(String research_interests) {
-		this.research_interests = research_interests;
-	}
+	
+	
+	
 	public String getCvfile() {
 		return cvfile;
 	}
+	public Categories getResearch_interests() {
+		return research_interests;
+	}
+
+	public void setResearch_interests(Categories research_interests) {
+		this.research_interests = research_interests;
+	}
+
 	public void setCvfile(String cvfile) {
 		this.cvfile = cvfile;
 	}
@@ -128,13 +148,7 @@ public class Reviewer extends User{
 //	public void setVerified(boolean verified) {
 //		this.verified = verified;
 //	}
-//	
-//	public String getPassword() {
-//		return password;
-//	}
-//	public void setPassword(String password) {
-//		this.password = password;
-//	}
+
 	
 	public void setId(long id) {
 		this.id = id;
@@ -153,6 +167,18 @@ public class Reviewer extends User{
 		this.qualification = qualification;
 	}
 	
+	
+	
+//	public Set<Paper> getPapers() {
+//		return papers;
+//	}
+//
+//	public void setPapers(Set<Paper> papers) {
+//		this.papers = papers;
+//	}
+//	
+	
+
 	public Reviewer() {
 		super();
 	}
@@ -162,7 +188,7 @@ public class Reviewer extends User{
 	
 	
 	
-	public Reviewer(long id, String department, String qualification, String research_interests,
+	public Reviewer(long id, String department, String qualification, Categories research_interests,
 			String cvfile, String prooffile) {
 		super();
 		this.id = id;
@@ -173,7 +199,7 @@ public class Reviewer extends User{
 		this.cvfile = cvfile;
 		this.prooffile = prooffile;
 	}
-	public Reviewer( String department, String qualification, String research_interests, String cvfile,
+	public Reviewer( String department, String qualification, Categories research_interests, String cvfile,
 			String prooffile) {
 		super();
 		

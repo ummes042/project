@@ -24,11 +24,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aud.demo.model.Categories;
 import com.aud.demo.model.Paper;
 import com.aud.demo.model.PaperStatus;
+import com.aud.demo.model.Reviewer;
 import com.aud.demo.model.User;
 import com.aud.demo.service.AuthorServiceImpl;
 import com.aud.demo.service.PaperServiceImpl;
+import com.aud.demo.service.ReviewerServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -40,6 +43,10 @@ public class PaperController {
 	
 	@Autowired
 	PaperServiceImpl paperService;
+	
+	@Autowired
+	ReviewerServiceImpl reviewerservice;
+	
 	
 	@Autowired
 	AuthorServiceImpl authorService;
@@ -178,6 +185,19 @@ public String saveOrUpdate(Paper paper, BindingResult bindingResult) {
 	}
 	
 	
+	@GetMapping("/reviewer/fetch")
+	public List<Paper> fetchPapersForReviewer() {
+		
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Reviewer reviewer = reviewerservice.findReviewerByEmail(auth.getName());
+	    Categories category = reviewer.getResearch_interests();
+		logger.info("Reviewer category -> {}",category);
+         return reviewerservice.fetchPapersForReviewer(category);
+	       
+	}
+	
+
 	
 }
 

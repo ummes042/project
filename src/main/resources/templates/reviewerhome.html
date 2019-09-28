@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+     <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	 xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
@@ -14,9 +14,9 @@
 
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
-<!-- 	<link rel="stylesheet" type="text/css" th:href="@{/css/login.css}" />
-	<link rel="stylesheet" type="text/css" th:href="@{/css/stylesheetControlPanel.css}" />
-   -->	
+ 	<!--      <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/stylesheetControlPanel.css}" />  -->
+   
   	<script th:src="@{/js/jquery.min.js}"></script>
   	<script th:src="@{/js/bootstrap.min.js}"></script>
   	<script th:src="@{/js/angular.min.js}"></script>
@@ -24,14 +24,14 @@
   	
   	
   	<meta name="_csrf" th:content="${_csrf.token}"/>
-<!-- default header name is X-CSRF-TOKEN -->
+     <!--       default header name is X-CSRF-TOKEN  -->
 <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
 </head>
 
-<body ng-app="myApp">
+<body  ng-App="myApp">
+        <div ng-controller="reviewerCtrl">
 
-<div ng-controller=reviewerCtrl>
 
 
           <div style="padding:20px;text-align: center;">
@@ -42,22 +42,27 @@
                   
                     <th style="text-align: center">Title</th>
                     <th style="text-align: center">Category</th>
+                    <th style="text-align: center">status</th>
                     <th style="text-align: center">paper_id</th>
                     
-               <!--        <th style="text-align: center">Keywords</th>
+                <!--         <th style="text-align: center">Keywords</th>
                     <th style="text-align: center">Experts</th>
-                       <th style="text-align: center">Status</th>   -->
+                       <th style="text-align: center">Status</th>  -->
                        
-                          <th style="text-align: center">Action</th>
+                          <th style="text-align: center">Action</th> 
                     </thead>
                     <tbody>
                         <tr ng-repeat="x in papers">
                             <td>{{$index+1}}</td>
                              <td>{{x.title}}</td>
                              <td>{{x.category}}</td>
-                             <td>{{x.paper_id}}</td>
+                             <td>{{x.status}}</td>
+                             <td>{{x.id}}</td>
                              
-                        <!--       <td>{{x.keywords}}</td>
+                             <button ng-if="x.status=='processing'" type="button" class="btn btn-danger"  >Download</button></td>
+                             <td ng-elif>No action</td>
+                             
+                         <!--       <td>{{x.keywords}}</td>
                              <td>{{x.experts}}</td>
                              <td>{{x.status}}</td>
                              <td ng-if="x.status=='Accepted'">Download</td>
@@ -73,5 +78,7 @@
                 
         </div>
     </body>
-</html>
+</html> 
+
+
 

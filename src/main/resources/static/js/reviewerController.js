@@ -14,7 +14,7 @@ app.controller('reviewerCtrl', ['$scope', '$http', function ($scope, $http) {
     
     $scope.getPapers = function () {
         
-        $http.get('/paper/fetch')
+        $http.get('/paper/reviewer/fetch')
             .then(function success(e) {
             	console.log(e);
                    $scope.papers = e.data;
