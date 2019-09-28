@@ -197,6 +197,14 @@ public String saveOrUpdate(Paper paper, BindingResult bindingResult) {
 	       
 	}
 	
+//	@GetMapping("/paper/accept/{paperdId}")
+//	public String paperaccept(@PathVariable long paperId) {
+//		
+//		
+//		
+//		return 
+//	}
+//	
 
 	
 }
