@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Optional;
 //import java.util.logging.Logger;
 
-import javax.management.Query;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

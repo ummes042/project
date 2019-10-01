@@ -25,8 +25,20 @@ app.controller('reviewerCtrl', ['$scope', '$http', function ($scope, $http) {
     };
     $scope.getPapers();
     
+ $scope.accept = function (index) {
+	 paper = $scope.papers[index];
+        $http.get('/paper/accept/'+paper.id)
+            .then(function success(e) {
+            	console.log(e);
+                   $scope.papers[index].status = e.data.status;
+                
+            }, function error(e) {
+
+            });
+    };
+    
     
   
     }]);
  
-var 
+

@@ -189,11 +189,11 @@ public String saveOrUpdate(Paper paper, BindingResult bindingResult) {
 	
 	
 	@GetMapping("/accept/{pid}")
-	public String paperStatusAccept(@PathVariable long pid ) {
-		 Paper paper = paper.findPaperById(pid);
+	public Paper paperStatusAccept(@PathVariable long pid ) {
+		Paper paper = paperService.findPaperById(pid);
 		paper.setStatus(PaperStatus.Accepted);	
-		PaperRepo.save(paper);
-		return paperStatusAccept(pid);
+		paperService.savePaper(paper);
+		return paper;
 	}
 	
 
