@@ -4,11 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+//import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aud.demo.model.Paper;
 import com.aud.demo.model.PaperStatus;
 import com.aud.demo.model.User;
+import com.aud.demo.repository.PaperRepository;
 import com.aud.demo.service.AuthorServiceImpl;
 import com.aud.demo.service.PaperServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -41,6 +44,8 @@ public class PaperController {
 	@Autowired
 	PaperServiceImpl paperService;
 	
+	@Autowired
+	PaperRepository PaperRepo;
 	
 	
 	
@@ -183,14 +188,14 @@ public String saveOrUpdate(Paper paper, BindingResult bindingResult) {
 	
 	
 	
-//	@GetMapping("/paper/accept/{paperdId}")
-//	public String paperaccept(@PathVariable long paperId) {
-//		
-//		
-//		
-//		return 
-//	}
-//	
+	@GetMapping("/accept/{pid}")
+	public String paperStatusAccept(@PathVariable long pid ) {
+		 Paper paper = paper.findPaperById(pid);
+		paper.setStatus(PaperStatus.Accepted);	
+		PaperRepo.save(paper);
+		return paperStatusAccept(pid);
+	}
+	
 
 	
 }

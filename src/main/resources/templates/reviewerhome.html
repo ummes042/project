@@ -63,8 +63,8 @@
                              <td ng-if="x.status=='Processing'"><a type="button" href="{{x.filename}}" class="btn btn-primary" >View</a></td>
                              <td ng-if="x.status!='Processing'">No action</td>
                              
-                             <td ng-if="x.status=='Processing'"><a type="button" href="{{x.filename}}" class="btn btn-primary" >Accept</a></td>
-                             <td ng-if="x.status=='Processing'"><a type="button" href="{{x.filename}}" class="btn btn-primary" >Reject</a></td>
+                             <td ng-if="x.status=='Processing'"><a type="button" ng-click="accept($index)" class="btn btn-primary" >Accept</a></td>
+                             <td ng-if="x.status=='Processing'"><a type="button" ng-click="reject($index)" class="btn btn-primary" >Reject</a></td>
                              
                              
                          <!--       <td>{{x.keywords}}</td>

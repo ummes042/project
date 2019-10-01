@@ -29,3 +29,4 @@ app.controller('reviewerCtrl', ['$scope', '$http', function ($scope, $http) {
   
     }]);
  
+var 
